@@ -70,7 +70,7 @@
                 <el-form-item>
                   <el-button
                     type="primary"
-                    @click="regist"
+                    @click="resetForm('loginForm')"
                     class="block btn-block"
                     >登录</el-button
                   >
@@ -83,65 +83,58 @@
       </div>
     </div>
     <div class="login-bottom">
-      <span>Copyright © 2022 | 济南翌康科技有限公司</span>
+      <span>版权：济南翌康科技有限公司</span>
     </div>
   </div>
 </template>
 <script>
-import { reactive, ref } from "vue";
-import service from "utils/request";
 export default {
   name: "Login",
-  setup(props, context) {
-    console.log("props:", props, "context:", context);
-    const loginForm = reactive({
-      userCode: "",
-      userName: "",
-      userPassword: "",
-      hospital: "",
-    });
-    const userNameVisable = ref(false);
-    const hospitalInfo = reactive([
-      { fixmedins_code: "H37132100308", fixmedins_name: "沂南县人民医院" },
-      { fixmedins_code: "H37132100116", fixmedins_name: "沂南县中医医院" },
-    ]);
-    const rules = reactive({
-      userCode: [{ required: true, message: "请输入工号", trigger: "blur" }],
-      userName: [
-        {
-          required: true,
-          message: "输入工号后回车获取用户名",
-          trigger: "blur",
-        },
-      ],
-      userPassword: [
-        { required: true, message: "请输入密码", trigger: "blur" },
-      ],
-      hospital: [{ required: true, message: "请选择院区", trigger: "change" }],
-    });
-
-    // let resetForm = (formName) => {
-    //   this.$refs[formName].resetFields();
-    // };
-    let regist = () => {
-      let data = reactive({
-        requestName: "getNetworkingPatClassId",
-      });
-      service.request({
-        method: "post",
-        url: "",
-        data,
-        // data: data, 左边的data是变量名（key）后台接收的。右边的Data是接收的参数。如果两者都是同名的情况下，可以写成单一个即可（ES6的写法）
-      });
-    };
-
+  data() {
     return {
-      userNameVisable,
-      loginForm,
-      hospitalInfo,
-      rules,
-      regist,
+      loginForm: {
+        userCode: "",
+        userName: "",
+        userPassword: "",
+        hospital: "",
+      },
+      userNameVisable: false,
+      hospitalInfo: [
+        { fixmedins_code: "H37132100308", fixmedins_name: "沂南县人民医院" },
+        { fixmedins_code: "H37132100116", fixmedins_name: "沂南县中医医院" },
+      ],
+      rules: {
+        userCode: [{ required: true, message: "请输入工号", trigger: "blur" }],
+        userName: [
+          {
+            required: true,
+            message: "输入工号后回车获取用户名",
+            trigger: "blur",
+          },
+        ],
+        userPassword: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+        ],
+        hospital: [
+          { required: true, message: "请选择院区", trigger: "change" },
+        ],
+      },
     };
+  },
+  methods: {
+    // submitForm(formName) {
+    //   this.$refs[formName].validate((valid) => {
+    //     if (valid) {
+    //       alert("submit!");
+    //     } else {
+    //       console.log("error submit!!");
+    //       return false;
+    //     }
+    //   });
+    // },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
   },
 };
 </script>
